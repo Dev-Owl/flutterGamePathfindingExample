@@ -12,8 +12,8 @@ import 'gridLayer.dart';
 import 'unitSystem.dart';
 
 class ExampleGame extends BaseGame with HasDraggableComponents {
-  late final GameState state;
-  late final GridLayer gridLayer;
+  late GameState state;
+  GridLayer? gridLayer;
   Path? tempPath;
   final Paint debugPaint = Paint()
     ..color = Colors.pink
@@ -24,12 +24,7 @@ class ExampleGame extends BaseGame with HasDraggableComponents {
   void onResize(Vector2 canvasSize) {
     super.onResize(canvasSize);
     state = GameState(UnitSystem(canvasSize.y, canvasSize.x));
-  }
-
-  @override
-  Future<void> onLoad() {
     gridLayer = GridLayer(state);
-    return super.onLoad();
   }
 
   Path getLineBetween(Vector2 startPoint, Vector2 endPoint) {
@@ -111,7 +106,7 @@ class ExampleGame extends BaseGame with HasDraggableComponents {
 
   @override
   void render(Canvas canvas) {
-    gridLayer.render(canvas);
+    gridLayer?.render(canvas);
     super.render(canvas);
     if (tempPath != null) {
       canvas.drawPath(tempPath!, debugPaint);
