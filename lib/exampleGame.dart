@@ -29,8 +29,8 @@ class ExampleGame extends BaseGame with HasDraggableComponents {
 
   Path getLineBetween(Vector2 startPoint, Vector2 endPoint) {
     final gridPath = AStar(
-      rows: (GRID_VERT_HEIGHT + 2),
-      columns: (GRID_VERT_WIDTH + 2),
+      rows: GRID_HEIGHT + 1,
+      columns: GRID_WIDTH + 1,
       start: startPoint.toOffset(),
       end: endPoint.toOffset(),
       barriers: [], //Add points here to prevent the path passing
