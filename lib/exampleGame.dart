@@ -64,30 +64,48 @@ class ExampleGame extends BaseGame with HasDraggableComponents {
   void resetElements() {
     components.clear();
     tempPath = null;
+    lastDragPosition = null;
+    lastDragStart = null;
   }
 
   void addPointOnGrid(Vector2 point) =>
       components.add(ColorPoint(point, state));
 
+  bool insideGrid(Vector2 point) {
+    if (point.x >= 0 &&
+        point.y >= 0 &&
+        point.x <= GRID_WIDTH &&
+        point.y <= GRID_HEIGHT) {
+      return true;
+    }
+    return false;
+  }
+
   void onDragStart(int pointerId, DragStartInfo info) {
     super.onDragStart(pointerId, info);
+    final startPointOnGrid =
+        state.unitSystem.pixelToGrid(info.eventPosition.global);
     resetElements();
-    lastDragPosition = info.eventPosition.global;
-    lastDragStart = info.eventPosition.global;
-    addPointOnGrid(state.unitSystem.pixelToGrid(lastDragPosition!));
+    if (!insideGrid(startPointOnGrid)) return;
+    lastDragPosition = startPointOnGrid;
+    lastDragStart = startPointOnGrid;
+    addPointOnGrid(lastDragPosition!);
   }
 
   void onDragUpdate(int pointerId, DragUpdateInfo event) {
     super.onDragUpdate(pointerId, event);
-    lastDragPosition = event.eventPosition.global;
+    final nextPoint = state.unitSystem.pixelToGrid(event.eventPosition.global);
+    if (!insideGrid(nextPoint)) return;
+    lastDragPosition = nextPoint;
   }
 
   void onDragEnd(int pointerId, DragEndInfo event) {
     super.onDragEnd(pointerId, event);
-    if (lastDragPosition != null) {
-      addPointOnGrid(state.unitSystem.pixelToGrid(lastDragPosition!));
-      tempPath = getLineBetween(state.unitSystem.pixelToGrid(lastDragStart!),
-          state.unitSystem.pixelToGrid(lastDragPosition!));
+
+    if (lastDragPosition != null && lastDragStart != null) {
+      if (!insideGrid(lastDragPosition!)) return;
+      addPointOnGrid(lastDragPosition!);
+      tempPath = getLineBetween(lastDragStart!, lastDragPosition!);
     }
   }
 

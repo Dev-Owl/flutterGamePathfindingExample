@@ -18,21 +18,12 @@ const int GRID_WIDTH = GRID_VERT_WIDTH + 1;
 const int GRID_HEIGHT = GRID_VERT_HEIGHT + 1;
 const double GRID_CELL_GAP = PLAYING_FIELD_WIDTH / GRID_WIDTH;
 
-// - Sizes of different components
-const double PLAYER_DIAMETER = 0.06 * SCALE_WORLD_MULTIPLIER;
-const double PLANET_DIAMETER = GRID_CELL_GAP * 2;
-const double WORMHOLE_DIAMETER = PLANET_DIAMETER;
-const double CHECKPOINT_DIAMETER = GRID_CELL_GAP;
-
 class UnitSystem {
   // Getters
   double get pixelsInMeter =>
       screenHeightInPixels / PLAYING_FIELD_HEIGHT * playingFieldToScreenRatio;
   double get playingFieldHeight => PLAYING_FIELD_HEIGHT * pixelsInMeter;
   double get playingFieldWidth => PLAYING_FIELD_WIDTH * pixelsInMeter;
-  double get playerDiameter => PLAYER_DIAMETER * pixelsInMeter;
-  double get planetDiameter => PLANET_DIAMETER * pixelsInMeter;
-  double get checkpointDiameter => CHECKPOINT_DIAMETER * pixelsInMeter;
   double get gridCellGap => GRID_CELL_GAP * pixelsInMeter;
   Vector2 get playingFieldOffset => Vector2(
       screenWidthInPixels / 2 - playingFieldWidth / 2,
